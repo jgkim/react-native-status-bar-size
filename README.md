@@ -44,9 +44,12 @@ var MyApp = React.createClass({
 });
 ```
 
+![Demo gif](https://github.com/brentvatne/react-native-status-bar-size/blob/master/demo.gif)
+
 ## TODOS
 
 - [ ] Any way to know when status bar change is triggered what is going
   to happen to it? Will it grow or shrink? To what height? Could be useful to transition with it,
   otherwise the `willChange` event is a bit pointless (right now this
   lib only responds to `didChange`)
+- [ ] Update it after device rotation event
