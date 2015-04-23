@@ -1,0 +1,25 @@
+{
+  "name": "react-native-status-bar-size",
+  "version": "0.0.1",
+  "description": "Watch and respond to changes in the iOS status bar height",
+  "main": "StatusBarSizeIOS.js",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:brentvatne/react-native-status-bar-size.git"
+  },
+  "files": [
+    "RNStatusBarSize.xcodeproj",
+    "RNStatusBarSize/RNStatusBarSize.h",
+    "RNStatusBarSize/RNStatusBarSize.m",
+    "StatusBarSizeIOS.js",
+    "README.md"
+  ],
+  "author": "Brent Vatne <brentvatne@gmail.com> (https://github.com/brentvatne)",
+  "license": "MIT",
+  "devDependencies": {
+    "react-native": "^0.4.0"
+  },
+  "peerDependencies": {
+    "react-native": "^0.4.0"
+  }
+}
