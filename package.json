@@ -1,6 +1,6 @@
 {
   "name": "react-native-status-bar-size",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Watch and respond to changes in the iOS status bar height",
   "main": "StatusBarSizeIOS.js",
   "repository": {
