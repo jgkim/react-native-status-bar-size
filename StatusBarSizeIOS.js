@@ -10,7 +10,11 @@ var RNStatusBarSize = NativeModules.RNStatusBarSize;
 
 var logError = require('logError');
 
-var DEVICE_STATUS_BAR_HEIGHT_EVENT = 'statusBarSizeDidChange';
+var DEVICE_STATUS_BAR_HEIGHT_EVENTS = {
+    willChange: 'statusBarSizeWillChange',
+    didChange: 'statusBarSizeDidChange',
+    change: 'statusBarSizeDidChange'
+};
 
 var _statusBarSizeHandlers = {};
 
@@ -32,12 +36,17 @@ var _statusBarSizeHandlers = {};
  *   };
  * },
  * componentDidMount: function() {
- *   StatusBarSizeIOS.addEventListener('change', this._handleStatusBarSizeChange);
+ *   StatusBarSizeIOS.addEventListener('willChange', this._handleStatusBarSizeWillChange);
+ *   StatusBarSizeIOS.addEventListener('didChange', this._handleStatusBarSizeDidChange);
  * },
  * componentWillUnmount: function() {
- *   StatusBarSizeIOS.removeEventListener('change', this._handleStatusBarSizeChange);
+ *   StatusBarSizeIOS.removeEventListener('willChange', this._handleStatusBarSizeWillChange);
+ *   StatusBarSizeIOS.removeEventListener('didChange', this._handleStatusBarSizeDidChange);
  * },
- * _handleStatusBarSizeChange: function(currentStatusBarHeight) {
+ * _handleStatusBarSizeWillChange: function(upcomingStatusBarHeight) {
+ *   console.log('Upcoming StatusBar Height:' + upcomingStatusBarHeight);
+ * },
+ * _handleStatusBarSizeDidChange: function(currentStatusBarHeight) {
  *   this.setState({ currentStatusBarHeight, });
  * },
  * render: function() {
@@ -53,15 +62,17 @@ var _statusBarSizeHandlers = {};
 var StatusBarSizeIOS = {
 
   /**
-   * Add a handler to Status Bar size changes by listening to the `change` event type
-   * and providing the handler
+   * Add a handler to Status Bar size changes by listening to the event type
+   * and providing the handler.
+   *
+   * Possible event types: change (deprecated), willChange, didChange
    */
   addEventListener: function(
     type: string,
     handler: Function
   ) {
     _statusBarSizeHandlers[handler] = RCTDeviceEventEmitter.addListener(
-      DEVICE_STATUS_BAR_HEIGHT_EVENT,
+      DEVICE_STATUS_BAR_HEIGHT_EVENTS[type],
       (statusBarSizeData) => {
         handler(statusBarSizeData.height);
       }
@@ -69,7 +80,7 @@ var StatusBarSizeIOS = {
   },
 
   /**
-   * Remove a handler by passing the `change` event type and the handler
+   * Remove a handler by passing the event type and the handler
    */
   removeEventListener: function(
     type: string,
@@ -87,7 +98,7 @@ var StatusBarSizeIOS = {
 };
 
 RCTDeviceEventEmitter.addListener(
-  DEVICE_STATUS_BAR_HEIGHT_EVENT,
+  DEVICE_STATUS_BAR_HEIGHT_EVENTS.didChange,
   (statusBarData) => {
     StatusBarSizeIOS.currentHeight = statusBarData.height;
   }

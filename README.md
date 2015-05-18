@@ -11,6 +11,11 @@ Watch and respond to changes in the iOS status bar height.
    [(Screenshot)](http://url.brentvatne.ca/g9Wp).
 4. Follow the example below to use it in JS
 
+### Deprecated `change` Event
+
+The `change` event has been deprecated. The `didChange` event should be used instead.
+It's still available but may be removed in a later version.
+
 ## Example
 
 ```javascript
@@ -22,14 +27,20 @@ var MyApp = React.createClass({
    },
 
    componentDidMount: function() {
-     StatusBarSizeIOS.addEventListener('change', this._handleStatusBarSizeChange);
+     StatusBarSizeIOS.addEventListener('willChange', this._handleStatusBarSizeWillChange);
+     StatusBarSizeIOS.addEventListener('didChange', this._handleStatusBarSizeDidChange);
    },
 
    componentWillUnmount: function() {
-     StatusBarSizeIOS.removeEventListener('change', this._handleStatusBarSizeChange);
+     StatusBarSizeIOS.removeEventListener('willChange', this._handleStatusBarSizeWillChange);
+     StatusBarSizeIOS.removeEventListener('didChange', this._handleStatusBarSizeDidChange);
    },
 
-   _handleStatusBarSizeChange: function(currentStatusBarHeight) {
+   _handleStatusBarSizeWillChange: function(nextStatusBarHeight) {
+     console.log('Will Change: ' + nextStatusBarHeight);
+   },
+
+   _handleStatusBarSizeDidChange: function(currentStatusBarHeight) {
      console.log('changed');
      this.setState({ currentStatusBarHeight: currentStatusBarHeight });
    },
@@ -48,8 +59,4 @@ var MyApp = React.createClass({
 
 ## TODOS
 
-- [ ] Any way to know when status bar change is triggered what is going
-  to happen to it? Will it grow or shrink? To what height? Could be useful to transition with it,
-  otherwise the `willChange` event is a bit pointless (right now this
-  lib only responds to `didChange`)
 - [ ] Update it after device rotation event

@@ -26,9 +26,14 @@ RCT_EXPORT_MODULE()
     _lastKnownHeight = RNCurrentStatusBarSize();
 
     [[NSNotificationCenter defaultCenter] addObserver:self
-                                          selector:@selector(handleStatusBarDidChange)
-                                          name:UIApplicationDidChangeStatusBarFrameNotification
-                                          object:nil];
+                                             selector:@selector(handleStatusBarWillChange:)
+                                                 name:UIApplicationWillChangeStatusBarFrameNotification
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(handleStatusBarDidChange)
+                                                 name:UIApplicationDidChangeStatusBarFrameNotification
+                                               object:nil];
   }
   return self;
 }
@@ -40,6 +45,20 @@ RCT_EXPORT_MODULE()
 }
 
 #pragma mark - App Notification Methods
+
+- (void)handleStatusBarWillChange:(NSNotification *)notification
+{
+  NSValue *rectValue = [[notification userInfo] valueForKey:UIApplicationStatusBarFrameUserInfoKey];
+  
+  CGRect newFrame;
+  [rectValue getValue:&newFrame];
+  
+  float newHeight = newFrame.size.height;
+  if (newHeight != _lastKnownHeight) {
+    [_bridge.eventDispatcher sendDeviceEventWithName:@"statusBarSizeWillChange"
+                             body:@{@"height": [NSNumber numberWithFloat:newHeight]}];
+  }
+}
 
 - (void)handleStatusBarDidChange
 {
