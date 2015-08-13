@@ -4,19 +4,18 @@
  */
 'use strict';
 
-var NativeModules = require('NativeModules');
-var RCTDeviceEventEmitter = require('RCTDeviceEventEmitter');
+var React = require('react-native');
+var { NativeModules, DeviceEventEmitter } = React;
 var RNStatusBarSize = NativeModules.RNStatusBarSize;
 
-var logError = require('logError');
-
 var DEVICE_STATUS_BAR_HEIGHT_EVENTS = {
-    willChange: 'statusBarSizeWillChange',
-    didChange: 'statusBarSizeDidChange',
-    change: 'statusBarSizeDidChange'
+  willChange: 'statusBarSizeWillChange',
+  didChange: 'statusBarSizeDidChange',
+  change: 'statusBarSizeDidChange'
 };
 
 var _statusBarSizeHandlers = {};
+var noop = function() {};
 
 /**
  * `StatusBarSizeIOS` can tell you what the current height of the status bar
@@ -108,7 +107,7 @@ RNStatusBarSize.getCurrentStatusBarHeight(
   (statusBarData) => {
     StatusBarSizeIOS.currentHeight = statusBarData.height;
   },
-  logError
+  noop
 );
 
 module.exports = StatusBarSizeIOS;
