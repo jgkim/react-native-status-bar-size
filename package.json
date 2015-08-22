@@ -17,9 +17,9 @@
   "author": "Brent Vatne <brentvatne@gmail.com> (https://github.com/brentvatne)",
   "license": "MIT",
   "devDependencies": {
-    "react-native": "^0.4.0"
+    "react-native": "0.8.0"
   },
   "peerDependencies": {
-    "react-native": "^0.4.0"
+    "react-native": "0.8.0"
   }
 }
