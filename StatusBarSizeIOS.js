@@ -4,9 +4,8 @@
  */
 'use strict';
 
-var React = require('react-native');
-var { NativeModules, DeviceEventEmitter } = React;
-var RNStatusBarSize = NativeModules.RNStatusBarSize;
+var RNStatusBarSize = require('react-native').NativeModules.RNStatusBarSize;
+var RCTDeviceEventEmitter = require('RCTDeviceEventEmitter');
 
 var DEVICE_STATUS_BAR_HEIGHT_EVENTS = {
   willChange: 'statusBarSizeWillChange',
