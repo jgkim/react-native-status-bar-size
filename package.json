@@ -1,6 +1,6 @@
 {
   "name": "react-native-status-bar-size",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Watch and respond to changes in the iOS status bar height",
   "main": "StatusBarSizeIOS.js",
   "repository": {
@@ -15,11 +15,5 @@
     "README.md"
   ],
   "author": "Brent Vatne <brentvatne@gmail.com> (https://github.com/brentvatne)",
-  "license": "MIT",
-  "devDependencies": {
-    "react-native": "0.8.0"
-  },
-  "peerDependencies": {
-    "react-native": "0.8.0"
-  }
+  "license": "MIT"
 }
