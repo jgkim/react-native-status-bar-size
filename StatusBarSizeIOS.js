@@ -102,12 +102,16 @@ DeviceEventEmitter.addListener(
     StatusBarSizeIOS.currentHeight = statusBarData.height;
   }
 );
+//Wrap in try catch to avoid error on android
+try {
+  RNStatusBarSize.getCurrentStatusBarHeight(
+    (statusBarData) => {
+      StatusBarSizeIOS.currentHeight = statusBarData.height;
+    },
+    noop
+  );
+} catch (e) {
 
-RNStatusBarSize.getCurrentStatusBarHeight(
-  (statusBarData) => {
-    StatusBarSizeIOS.currentHeight = statusBarData.height;
-  },
-  noop
-);
+}
 
 module.exports = StatusBarSizeIOS;
