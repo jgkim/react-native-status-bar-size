@@ -4,9 +4,9 @@
  */
 'use strict';
 
-var React = require('react-native');
-var { DeviceEventEmitter, NativeModules } = React;
-var { RNStatusBarSize } = NativeModules;
+const { NativeEventEmitter, NativeModules } = require('react-native');
+const { RNStatusBarSize } = NativeModules;
+const StatusBarEmitter = new NativeEventEmitter(RNStatusBarSize);
 
 var DEVICE_STATUS_BAR_HEIGHT_EVENTS = {
   willChange: 'statusBarSizeWillChange',
@@ -70,7 +70,7 @@ var StatusBarSizeIOS = {
     type: string,
     handler: Function
   ) {
-    _statusBarSizeHandlers[handler] = DeviceEventEmitter.addListener(
+    _statusBarSizeHandlers[handler] = StatusBarEmitter.addListener(
       DEVICE_STATUS_BAR_HEIGHT_EVENTS[type],
       (statusBarSizeData) => {
         handler(statusBarSizeData.height);
@@ -96,7 +96,7 @@ var StatusBarSizeIOS = {
 
 };
 
-DeviceEventEmitter.addListener(
+StatusBarEmitter.addListener(
   DEVICE_STATUS_BAR_HEIGHT_EVENTS.didChange,
   (statusBarData) => {
     StatusBarSizeIOS.currentHeight = statusBarData.height;

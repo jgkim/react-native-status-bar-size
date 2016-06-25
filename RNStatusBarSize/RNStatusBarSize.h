@@ -1,5 +1,4 @@
-#import "RCTBridgeModule.h"
+#import "RCTEventEmitter.h"
 
-@interface RNStatusBarSize : NSObject<RCTBridgeModule>
-
+@interface RNStatusBarSize : RCTEventEmitter
 @end

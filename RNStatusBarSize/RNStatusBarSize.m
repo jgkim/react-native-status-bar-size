@@ -1,7 +1,6 @@
 #import "RNStatusBarSize.h"
 
 #import "RCTAssert.h"
-#import "RCTBridge.h"
 #import "RCTEventDispatcher.h"
 
 static float RNCurrentStatusBarSize()
@@ -14,34 +13,38 @@ static float RNCurrentStatusBarSize()
   float _lastKnownHeight;
 }
 
-@synthesize bridge = _bridge;
-
 RCT_EXPORT_MODULE()
 
-#pragma mark - Lifecycle
-
-- (instancetype)init
+- (NSArray<NSString *> *)supportedEvents
 {
-  if ((self = [super init])) {
-    _lastKnownHeight = RNCurrentStatusBarSize();
+  return @[@"statusBarSizeWillChange",
+           @"statusBarSizeDidChange"];
+}
 
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(handleStatusBarWillChange:)
-                                                 name:UIApplicationWillChangeStatusBarFrameNotification
-                                               object:nil];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(handleStatusBarDidChange)
-                                                 name:UIApplicationDidChangeStatusBarFrameNotification
-                                               object:nil];
-  }
-  return self;
+- (void)startObserving
+{
+  _lastKnownHeight = RNCurrentStatusBarSize();
+
+  [[NSNotificationCenter defaultCenter] addObserver:self
+                                           selector:@selector(handleStatusBarWillChange:)
+                                               name:UIApplicationWillChangeStatusBarFrameNotification
+                                             object:nil];
+  
+  [[NSNotificationCenter defaultCenter] addObserver:self
+                                           selector:@selector(handleStatusBarDidChange)
+                                               name:UIApplicationDidChangeStatusBarFrameNotification
+                                             object:nil];
+}
+
+- (void)stopObserving
+{
+  [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 
-- (void)dealloc
+- (dispatch_queue_t)methodQueue
 {
-  [[NSNotificationCenter defaultCenter] removeObserver:self];
+  return dispatch_get_main_queue();
 }
 
 #pragma mark - App Notification Methods
@@ -55,7 +58,7 @@ RCT_EXPORT_MODULE()
   
   float newHeight = newFrame.size.height;
   if (newHeight != _lastKnownHeight) {
-    [_bridge.eventDispatcher sendDeviceEventWithName:@"statusBarSizeWillChange"
+    [self sendEventWithName:@"statusBarSizeWillChange"
                              body:@{@"height": [NSNumber numberWithFloat:newHeight]}];
   }
 }
@@ -65,10 +68,12 @@ RCT_EXPORT_MODULE()
   float newHeight = RNCurrentStatusBarSize();
   if (newHeight != _lastKnownHeight) {
     _lastKnownHeight = newHeight;
-    [_bridge.eventDispatcher sendDeviceEventWithName:@"statusBarSizeDidChange"
+    [self sendEventWithName:@"statusBarSizeDidChange"
                              body:@{@"height": [NSNumber numberWithFloat:_lastKnownHeight]}];
   }
 }
+
+
 
 #pragma mark - Public API
 
