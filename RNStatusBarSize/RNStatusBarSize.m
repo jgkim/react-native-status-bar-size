@@ -24,6 +24,12 @@ RCT_EXPORT_MODULE()
 - (void)startObserving
 {
   _lastKnownHeight = RNCurrentStatusBarSize();
+    
+  [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
+  [[NSNotificationCenter defaultCenter] addObserver:self
+                                           selector:@selector(handleStatusBarDidChange)
+                                               name:UIDeviceOrientationDidChangeNotification
+                                             object:nil];
 
   [[NSNotificationCenter defaultCenter] addObserver:self
                                            selector:@selector(handleStatusBarWillChange:)
@@ -39,6 +45,9 @@ RCT_EXPORT_MODULE()
 - (void)stopObserving
 {
   [[NSNotificationCenter defaultCenter] removeObserver:self];
+    if ([[UIDevice currentDevice] isGeneratingDeviceOrientationNotifications]) {
+        [[UIDevice currentDevice] endGeneratingDeviceOrientationNotifications];
+    }
 }
 
 
