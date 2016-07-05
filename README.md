@@ -59,4 +59,4 @@ var MyApp = React.createClass({
 
 ## TODOS
 
-- [ ] Update it after device rotation event
+- [ x ] Update it after device rotation event (Fixed on 0.2.3)
