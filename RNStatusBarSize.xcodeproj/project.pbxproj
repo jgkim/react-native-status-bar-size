@@ -170,7 +170,7 @@
 					"$(SRCROOT)/node_modules/react-native/React",
 					"$(SRCROOT)/../react-native/React/**",
 				);
-				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -215,7 +215,7 @@
 					"$(SRCROOT)/node_modules/react-native/React",
 					"$(SRCROOT)/../react-native/React/**",
 				);
-				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -278,6 +278,7 @@
 				BB0DB4B61AE891EC002306E6 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
