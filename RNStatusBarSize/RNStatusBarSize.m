@@ -67,7 +67,7 @@ RCT_EXPORT_MODULE()
   
   float newHeight = newFrame.size.height;
   if (newHeight != _lastKnownHeight) {
-    [self sendEventWithName:@"statusBarSizeWillChange"
+    [self sendEventWithName:@"statusBarFrameWillChange"
                              body:@{@"height": [NSNumber numberWithFloat:newHeight]}];
   }
 }
@@ -77,7 +77,7 @@ RCT_EXPORT_MODULE()
   float newHeight = RNCurrentStatusBarSize();
   if (newHeight != _lastKnownHeight) {
     _lastKnownHeight = newHeight;
-    [self sendEventWithName:@"statusBarSizeDidChange"
+    [self sendEventWithName:@"statusBarFrameDidChange"
                              body:@{@"height": [NSNumber numberWithFloat:_lastKnownHeight]}];
   }
 }

@@ -4,14 +4,14 @@
  */
 'use strict';
 
-const { NativeEventEmitter, NativeModules } = require('react-native');
+const { NativeEventEmitter, StatusBarIOS, NativeModules } = require('react-native');
 const { RNStatusBarSize } = NativeModules;
 const StatusBarEmitter = new NativeEventEmitter(RNStatusBarSize);
 
 var DEVICE_STATUS_BAR_HEIGHT_EVENTS = {
-  willChange: 'statusBarSizeWillChange',
-  didChange: 'statusBarSizeDidChange',
-  change: 'statusBarSizeDidChange'
+  willChange: 'statusBarFrameWillChange',
+  didChange: 'statusBarFrameDidChange',
+  change: 'statusBarFrameDidChange',
 };
 
 var _statusBarSizeHandlers = {};
@@ -35,17 +35,17 @@ var noop = function() {};
  *   };
  * },
  * componentDidMount: function() {
- *   StatusBarSizeIOS.addEventListener('willChange', this._handleStatusBarSizeWillChange);
- *   StatusBarSizeIOS.addEventListener('didChange', this._handleStatusBarSizeDidChange);
+ *   StatusBarSizeIOS.addEventListener('willChange', this._handleStatusBarFrameWillChange);
+ *   StatusBarSizeIOS.addEventListener('didChange', this._handleStatusBarFrameDidChange);
  * },
  * componentWillUnmount: function() {
- *   StatusBarSizeIOS.removeEventListener('willChange', this._handleStatusBarSizeWillChange);
- *   StatusBarSizeIOS.removeEventListener('didChange', this._handleStatusBarSizeDidChange);
+ *   StatusBarSizeIOS.removeEventListener('willChange', this._handleStatusBarFrameWillChange);
+ *   StatusBarSizeIOS.removeEventListener('didChange', this._handleStatusBarFrameDidChange);
  * },
- * _handleStatusBarSizeWillChange: function(upcomingStatusBarHeight) {
+ * _handleStatusBarFrameWillChange: function(upcomingStatusBarHeight) {
  *   console.log('Upcoming StatusBar Height:' + upcomingStatusBarHeight);
  * },
- * _handleStatusBarSizeDidChange: function(currentStatusBarHeight) {
+ * _handleStatusBarFrameDidChange: function(currentStatusBarHeight) {
  *   this.setState({ currentStatusBarHeight, });
  * },
  * render: function() {
@@ -70,7 +70,7 @@ var StatusBarSizeIOS = {
     type: string,
     handler: Function
   ) {
-    _statusBarSizeHandlers[handler] = StatusBarEmitter.addListener(
+    _statusBarSizeHandlers[handler] = StatusBarIOS.addListener(
       DEVICE_STATUS_BAR_HEIGHT_EVENTS[type],
       (statusBarSizeData) => {
         handler(statusBarSizeData.height);
@@ -96,7 +96,7 @@ var StatusBarSizeIOS = {
 
 };
 
-StatusBarEmitter.addListener(
+StatusBarIOS.addListener(
   DEVICE_STATUS_BAR_HEIGHT_EVENTS.didChange,
   (statusBarData) => {
     StatusBarSizeIOS.currentHeight = statusBarData.height;
