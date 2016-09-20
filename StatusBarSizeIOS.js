@@ -5,8 +5,7 @@
 'use strict';
 
 const { NativeEventEmitter, StatusBarIOS, NativeModules } = require('react-native');
-const { RNStatusBarSize } = NativeModules;
-const StatusBarEmitter = new NativeEventEmitter(RNStatusBarSize);
+const { StatusBarManager } = NativeModules;
 
 var DEVICE_STATUS_BAR_HEIGHT_EVENTS = {
   willChange: 'statusBarFrameWillChange',
@@ -15,7 +14,6 @@ var DEVICE_STATUS_BAR_HEIGHT_EVENTS = {
 };
 
 var _statusBarSizeHandlers = {};
-var noop = function() {};
 
 /**
  * `StatusBarSizeIOS` can tell you what the current height of the status bar
@@ -72,8 +70,8 @@ var StatusBarSizeIOS = {
   ) {
     _statusBarSizeHandlers[handler] = StatusBarIOS.addListener(
       DEVICE_STATUS_BAR_HEIGHT_EVENTS[type],
-      (statusBarSizeData) => {
-        handler(statusBarSizeData.height);
+      (statusBarData) => {
+        handler(statusBarData.frame.height);
       }
     );
   },
@@ -99,16 +97,15 @@ var StatusBarSizeIOS = {
 StatusBarIOS.addListener(
   DEVICE_STATUS_BAR_HEIGHT_EVENTS.didChange,
   (statusBarData) => {
-    StatusBarSizeIOS.currentHeight = statusBarData.height;
+    StatusBarSizeIOS.currentHeight = statusBarData.frame.height;
   }
 );
 //Wrap in try catch to avoid error on android
 try {
-  RNStatusBarSize.getCurrentStatusBarHeight(
-    (statusBarData) => {
-      StatusBarSizeIOS.currentHeight = statusBarData.height;
-    },
-    noop
+  StatusBarManager.getHeight(
+    (statusBarFrameData) => {
+      StatusBarSizeIOS.currentHeight = statusBarFrameData.height;
+    }
   );
 } catch (e) {
 

@@ -8,9 +8,6 @@
     "url": "git@github.com:tioback/react-native-status-bar-size.git"
   },
   "files": [
-    "RNStatusBarSize.xcodeproj",
-    "RNStatusBarSize/RNStatusBarSize.h",
-    "RNStatusBarSize/RNStatusBarSize.m",
     "StatusBarSizeIOS.js",
     "README.md"
   ],

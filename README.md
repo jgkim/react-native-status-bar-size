@@ -5,11 +5,7 @@ Watch and respond to changes in the iOS status bar height.
 ### Add it to your project
 
 1. Run `npm install react-native-status-bar-size --save`
-2. Open your project in XCode, right click on `Libraries` and click `Add
-   Files to "Your Project Name"` [(Screenshot)](http://url.brentvatne.ca/g9Wp).
-3. Add `libRNStatusBarSize.a` to `Build Phases -> Link Binary With Libraries`
-   [(Screenshot)](http://url.brentvatne.ca/g9Wp).
-4. Follow the example below to use it in JS
+2. Follow the example below to use it in JS
 
 ### Deprecated `change` Event
 
@@ -56,7 +52,3 @@ var MyApp = React.createClass({
 ```
 
 ![Demo gif](https://github.com/brentvatne/react-native-status-bar-size/blob/master/demo.gif)
-
-## TODOS
-
-- [ x ] Update it after device rotation event (Fixed on 0.2.3)
