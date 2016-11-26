@@ -5,12 +5,15 @@
   "main": "StatusBarSizeIOS.js",
   "repository": {
     "type": "git",
-    "url": "git@github.com:brentvatne/react-native-status-bar-size.git"
+    "url": "git@github.com:jgkim/react-native-status-bar-size.git"
   },
   "files": [
     "StatusBarSizeIOS.js",
     "README.md"
   ],
-  "author": "Brent Vatne <brentvatne@gmail.com> (https://github.com/brentvatne)",
+  "author": "Brent Vatne <brentvatne@gmail.com> (https://github.com/brentvatne/)",
+  "contributors": [
+    "James G. Kim <jgkim@jayg.org> (https://jayg.org/)"
+  ],
   "license": "MIT"
 }
