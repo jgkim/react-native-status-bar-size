@@ -51,4 +51,4 @@ var MyApp = React.createClass({
 });
 ```
 
-![Demo gif](https://github.com/jgkim/react-native-status-bar-size/blob/master/demo.gif)
+![Demo gif](https://raw.githubusercontent.com/jgkim/react-native-status-bar-size/master/demo.gif)
