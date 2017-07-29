@@ -13,7 +13,9 @@ var DEVICE_STATUS_BAR_HEIGHT_EVENTS = {
   change: 'statusBarFrameDidChange',
 };
 
-var _statusBarSizeHandlers = {};
+var _statusBarSizeHandlers = Object
+  .keys(DEVICE_STATUS_BAR_HEIGHT_EVENTS)
+  .reduce((obj, key) => ({...obj, [key]: new Map()}), {});
 
 /**
  * `StatusBarSizeIOS` can tell you what the current height of the status bar
@@ -68,12 +70,12 @@ var StatusBarSizeIOS = {
     type: string,
     handler: Function
   ) {
-    _statusBarSizeHandlers[handler] = StatusBarIOS.addListener(
+    _statusBarSizeHandlers[type].set(handler, StatusBarIOS.addListener(
       DEVICE_STATUS_BAR_HEIGHT_EVENTS[type],
       (statusBarData) => {
         handler(statusBarData.frame.height);
       }
-    );
+    ));
   },
 
   /**
@@ -83,11 +85,12 @@ var StatusBarSizeIOS = {
     type: string,
     handler: Function
   ) {
-    if (!_statusBarSizeHandlers[handler]) {
+    var subscription = _statusBarSizeHandlers[type].get(handler);
+    if (!subscription) {
       return;
     }
-    _statusBarSizeHandlers[handler].remove();
-    _statusBarSizeHandlers[handler] = null;
+    subscription.remove();
+    _statusBarSizeHandlers[type].delete(handler);
   },
 
   currentHeight: (null : ?number),
