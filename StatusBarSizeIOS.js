@@ -14,8 +14,13 @@ var DEVICE_STATUS_BAR_HEIGHT_EVENTS = {
 };
 
 var _statusBarSizeHandlers = {};
+
 function getHandlers(type) {
-  return _statusBarSizeHandlers[type] || (_statusBarSizeHandlers[type] = new Map());
+  if (!_statusBarSizeHandlers[type]) {
+    _statusBarSizeHandlers[type] = new Map();
+  }
+
+  return _statusBarSizeHandlers[type];
 }
 
 /**
@@ -30,26 +35,26 @@ function getHandlers(type) {
  * while `StatusBarSizeIOS` retrieves it over the bridge.
  *
  * ```
- * getInitialState: function() {
+ * getInitialState: function () {
  *   return {
  *     currentStatusBarHeight: StatusBarSizeIOS.currentHeight,
  *   };
  * },
- * componentDidMount: function() {
+ * componentDidMount: function () {
  *   StatusBarSizeIOS.addEventListener('willChange', this._handleStatusBarFrameWillChange);
  *   StatusBarSizeIOS.addEventListener('didChange', this._handleStatusBarFrameDidChange);
  * },
- * componentWillUnmount: function() {
+ * componentWillUnmount: function () {
  *   StatusBarSizeIOS.removeEventListener('willChange', this._handleStatusBarFrameWillChange);
  *   StatusBarSizeIOS.removeEventListener('didChange', this._handleStatusBarFrameDidChange);
  * },
- * _handleStatusBarFrameWillChange: function(upcomingStatusBarHeight) {
+ * _handleStatusBarFrameWillChange: function (upcomingStatusBarHeight) {
  *   console.log('Upcoming StatusBar Height:' + upcomingStatusBarHeight);
  * },
- * _handleStatusBarFrameDidChange: function(currentStatusBarHeight) {
+ * _handleStatusBarFrameDidChange: function (currentStatusBarHeight) {
  *   this.setState({ currentStatusBarHeight, });
  * },
- * render: function() {
+ * render: function () {
  *   return (
  *     <Text>Current status bar height is: {this.state.currentStatusBarHeight}</Text>
  *   );
@@ -67,7 +72,7 @@ var StatusBarSizeIOS = {
    *
    * Possible event types: change (deprecated), willChange, didChange
    */
-  addEventListener: function(
+  addEventListener: function (
     type: string,
     handler: (height: number) => mixed
   ) {
@@ -82,12 +87,13 @@ var StatusBarSizeIOS = {
   /**
    * Remove a handler by passing the event type and the handler
    */
-  removeEventListener: function(
+  removeEventListener: function (
     type: string,
     handler: (height: number) => mixed
   ) {
     const handlers = getHandlers(type);
     const listener = handlers.get(handler);
+
     if (listener) {
       listener.remove();
       handlers.delete(handler);
@@ -104,6 +110,7 @@ StatusBarIOS.addListener(
     StatusBarSizeIOS.currentHeight = statusBarData.frame.height;
   }
 );
+
 //Wrap in try catch to avoid error on android
 try {
   StatusBarManager.getHeight(
