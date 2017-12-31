@@ -105,7 +105,10 @@ var StatusBarSizeIOS = {
 };
 
 StatusBarIOS.addListener(
-  DEVICE_STATUS_BAR_HEIGHT_EVENTS.didChange,
+  // Despite what Apple's SDK docs say, `willChange` returns the new frame and
+  // `didChange` returns the previous frame. As such, we must use `willChange`
+  // here.
+  DEVICE_STATUS_BAR_HEIGHT_EVENTS.willChange,
   (statusBarData) => {
     StatusBarSizeIOS.currentHeight = statusBarData.frame.height;
   }
