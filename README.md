@@ -1,4 +1,4 @@
-## react-native-status-bar-height
+## react-native-status-bar-size
 
 Watch and respond to changes in the iOS status bar height.
 
