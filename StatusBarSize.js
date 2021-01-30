@@ -6,6 +6,7 @@
 
 const { NativeEventEmitter, StatusBar, NativeModules } = require('react-native');
 const { StatusBarManager } = NativeModules;
+const SBemitter = new NativeEventEmitter(StatusBarManager);
 
 var DEVICE_STATUS_BAR_HEIGHT_EVENTS = {
   willChange: 'statusBarFrameWillChange',
@@ -76,7 +77,7 @@ var StatusBarSize = {
     type: string,
     handler: (height: number) => mixed
   ) {
-    getHandlers(type).set(handler, StatusBar.addListener(
+    getHandlers(type).set(handler, SBemitter.addListener(
       DEVICE_STATUS_BAR_HEIGHT_EVENTS[type],
       (statusBarData) => {
         handler(statusBarData.frame.height);
@@ -104,7 +105,7 @@ var StatusBarSize = {
 
 };
 
-StatusBar.addListener(
+SBemitter.addListener(
   DEVICE_STATUS_BAR_HEIGHT_EVENTS.didChange,
   (statusBarData) => {
     StatusBarSize.currentHeight = statusBarData.frame.height;
