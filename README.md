@@ -18,18 +18,18 @@ It's still available but may be removed in a later version.
 var MyApp = React.createClass({
    getInitialState: function() {
      return {
-       currentStatusBarHeight: StatusBarSizeIOS.currentHeight,
+       currentStatusBarHeight: StatusBarSize.currentHeight,
      };
    },
 
    componentDidMount: function() {
-     StatusBarSizeIOS.addEventListener('willChange', this._handleStatusBarSizeWillChange);
-     StatusBarSizeIOS.addEventListener('didChange', this._handleStatusBarSizeDidChange);
+     StatusBarSize.addEventListener('willChange', this._handleStatusBarSizeWillChange);
+     StatusBarSize.addEventListener('didChange', this._handleStatusBarSizeDidChange);
    },
 
    componentWillUnmount: function() {
-     StatusBarSizeIOS.removeEventListener('willChange', this._handleStatusBarSizeWillChange);
-     StatusBarSizeIOS.removeEventListener('didChange', this._handleStatusBarSizeDidChange);
+     StatusBarSize.removeEventListener('willChange', this._handleStatusBarSizeWillChange);
+     StatusBarSize.removeEventListener('didChange', this._handleStatusBarSizeDidChange);
    },
 
    _handleStatusBarSizeWillChange: function(nextStatusBarHeight) {

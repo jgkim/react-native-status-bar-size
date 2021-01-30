@@ -1,11 +1,12 @@
 /**
- * @providesModule StatusBarSizeIOS
+ * @providesModule StatusBarSize
  * @flow
  */
 'use strict';
 
-const { NativeEventEmitter, StatusBarIOS, NativeModules } = require('react-native');
+const { NativeEventEmitter, StatusBar, NativeModules } = require('react-native');
 const { StatusBarManager } = NativeModules;
+const SBemitter = new NativeEventEmitter(StatusBarManager);
 
 var DEVICE_STATUS_BAR_HEIGHT_EVENTS = {
   willChange: 'statusBarFrameWillChange',
@@ -24,29 +25,29 @@ function getHandlers(type) {
 }
 
 /**
- * `StatusBarSizeIOS` can tell you what the current height of the status bar
+ * `StatusBarSize` can tell you what the current height of the status bar
  * is, so that you can adjust your layout accordingly when a phone call
  * notification comes up, for example.
  *
  * ### Basic Usage
  *
- * To see the current height, you can check `StatusBarSizeIOS.currentHeight`, which
+ * To see the current height, you can check `StatusBarSize.currentHeight`, which
  * will be kept up-to-date. However, `currentHeight` will be null at launch
- * while `StatusBarSizeIOS` retrieves it over the bridge.
+ * while `StatusBarSize` retrieves it over the bridge.
  *
  * ```
  * getInitialState: function () {
  *   return {
- *     currentStatusBarHeight: StatusBarSizeIOS.currentHeight,
+ *     currentStatusBarHeight: StatusBarSize.currentHeight,
  *   };
  * },
  * componentDidMount: function () {
- *   StatusBarSizeIOS.addEventListener('willChange', this._handleStatusBarFrameWillChange);
- *   StatusBarSizeIOS.addEventListener('didChange', this._handleStatusBarFrameDidChange);
+ *   StatusBarSize.addEventListener('willChange', this._handleStatusBarFrameWillChange);
+ *   StatusBarSize.addEventListener('didChange', this._handleStatusBarFrameDidChange);
  * },
  * componentWillUnmount: function () {
- *   StatusBarSizeIOS.removeEventListener('willChange', this._handleStatusBarFrameWillChange);
- *   StatusBarSizeIOS.removeEventListener('didChange', this._handleStatusBarFrameDidChange);
+ *   StatusBarSize.removeEventListener('willChange', this._handleStatusBarFrameWillChange);
+ *   StatusBarSize.removeEventListener('didChange', this._handleStatusBarFrameDidChange);
  * },
  * _handleStatusBarFrameWillChange: function (upcomingStatusBarHeight) {
  *   console.log('Upcoming StatusBar Height:' + upcomingStatusBarHeight);
@@ -64,7 +65,7 @@ function getHandlers(type) {
  * Open up the phone call status bar in the simulator to see it change.
  */
 
-var StatusBarSizeIOS = {
+var StatusBarSize = {
 
   /**
    * Add a handler to Status Bar size changes by listening to the event type
@@ -76,7 +77,7 @@ var StatusBarSizeIOS = {
     type: string,
     handler: (height: number) => mixed
   ) {
-    getHandlers(type).set(handler, StatusBarIOS.addListener(
+    getHandlers(type).set(handler, SBemitter.addListener(
       DEVICE_STATUS_BAR_HEIGHT_EVENTS[type],
       (statusBarData) => {
         handler(statusBarData.frame.height);
@@ -104,10 +105,10 @@ var StatusBarSizeIOS = {
 
 };
 
-StatusBarIOS.addListener(
+SBemitter.addListener(
   DEVICE_STATUS_BAR_HEIGHT_EVENTS.didChange,
   (statusBarData) => {
-    StatusBarSizeIOS.currentHeight = statusBarData.frame.height;
+    StatusBarSize.currentHeight = statusBarData.frame.height;
   }
 );
 
@@ -115,11 +116,11 @@ StatusBarIOS.addListener(
 try {
   StatusBarManager.getHeight(
     (statusBarFrameData) => {
-      StatusBarSizeIOS.currentHeight = statusBarFrameData.height;
+      StatusBarSize.currentHeight = statusBarFrameData.height;
     }
   );
 } catch (e) {
 
 }
 
-module.exports = StatusBarSizeIOS;
+module.exports = StatusBarSize;
